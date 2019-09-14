@@ -61,95 +61,6 @@ class SpinKick: Move{
     }
 }
 
-class Enemy {
-    var health = 20
-    var offence = 10
-    var defence = 5
-    var isAlive = true
-    var isBlocking = false
-    var level = 1
-    init() {
-
-    }
-    
-    func getLevel() -> Int{
-        return level
-    }
-
-    init(healthIn: Int, offenceIn: Int, defenceIn: Int) {
-        health=healthIn
-        offence=offenceIn
-        defence=defenceIn
-    }
-
-    func levelUp() {
-        offence=offence+1
-        defence=defence+1
-        health=health+5
-        if(Float(level)/2.0==Float(level/2)){
-            offence=offence+2
-        }else if(Float(level)/3.0==Float(level/3)){
-            defence=defence+1
-        }else{
-            health=health+5
-        }
-        level=level+1       
-    }
-
-    func attack() -> Int {
-        let crit = Int.random(in: 0 ... 1)
-        if crit == 1 {
-            let damage = (offence*3)/2
-            print("The enemy crits!")
-            print("The enemy deals \(damage) damage to you.")
-            return damage
-        }else{
-            print("The enemy deals \(offence) damage to you.")
-            return offence
-        }
-    }
-
-    func alive() -> Bool {
-        return isAlive
-    }
-
-    func block() {
-        isBlocking=true
-        print("The enemy blocks.")
-    }
-
-    func takedamage(damage: Int) {
-        if(isBlocking==true){
-            if(health>=(damage)/2){
-                if((damage/2>defence/2)){
-                    let takendamage = (damage)/2-defence/2
-                    print("The enemy takes \(takendamage) damage. The enemy has \(health-takendamage) heath left.")
-                    health=health-takendamage
-                }
-            }else{
-                health=0
-            }
-            if(health==0){
-                isAlive=false
-            }
-        }else{
-            if(health>=damage){
-                if((damage/2>defence/2)){
-                    let takendamage = (damage)-defence/2
-                    print("The enemy takes \(takendamage) damage. The enemy has \(health-takendamage) heath left.")
-                    health=health-takendamage
-                }
-            }else{
-                health=0
-            }
-            if(health==0){
-                isAlive=false
-            }
-        }
-        isBlocking=false
-    }
-}
-
 class Player {
     var maxHealth = 20
     var health: Int
@@ -170,12 +81,12 @@ class Player {
         return "\(move1.getName())\n\(move2.getName())\n\(move3.getName())\n\(move4.getName())"
     }
     func writeData(){
-        var datatowrite = NSString(string: "\(level)\n\(maxHealth)\n\(offence)\n\(defence)\n\(exp)\n\(move1.getName())\n\(move2.getName())\n\(move3.getName())\n\(move4.getName())")
+        let datatowrite = NSString(string: "\(level)\n\(maxHealth)\n\(offence)\n\(defence)\n\(exp)\n\(move1.getName())\n\(move2.getName())\n\(move3.getName())\n\(move4.getName())")
         writeFile(path: "Data/playerdata.data", towrite: datatowrite)
     }
 
     func readData(){
-        var playerdata = readFile(path: "Data/playerdata.data")
+        let playerdata = readFile(path: "Data/playerdata.data")
         var lines = playerdata.split { $0.isNewline }
         level = Int(String(lines[0]))!
         maxHealth = Int(String(lines[1]))!
@@ -196,15 +107,12 @@ class Player {
         switch(str){
             case Punch().getName():
             return Punch()
-            break
 
             case ArmBlock().getName():
             return ArmBlock()
-            break
 
             case SpinKick().getName():
             return SpinKick()
-            break
 
             default:
             return Move()
@@ -316,6 +224,95 @@ class Player {
     }
 }
 
+class Enemy {
+    var health = 20
+    var offence = 10
+    var defence = 5
+    var isAlive = true
+    var isBlocking = false
+    var level = 1
+    init() {
+
+    }
+    
+    func getLevel() -> Int{
+        return level
+    }
+
+    init(healthIn: Int, offenceIn: Int, defenceIn: Int) {
+        health=healthIn
+        offence=offenceIn
+        defence=defenceIn
+    }
+
+    func levelUp() {
+        offence=offence+1
+        defence=defence+1
+        health=health+5
+        if(Float(level)/2.0==Float(level/2)){
+            offence=offence+2
+        }else if(Float(level)/3.0==Float(level/3)){
+            defence=defence+1
+        }else{
+            health=health+5
+        }
+        level=level+1       
+    }
+
+    func attack() -> Int {
+        let crit = Int.random(in: 0 ... 1)
+        if crit == 1 {
+            let damage = (offence*3)/2
+            print("The enemy crits!")
+            print("The enemy deals \(damage) damage to you.")
+            return damage
+        }else{
+            print("The enemy deals \(offence) damage to you.")
+            return offence
+        }
+    }
+
+    func alive() -> Bool {
+        return isAlive
+    }
+
+    func block() {
+        isBlocking=true
+        print("The enemy blocks.")
+    }
+
+    func takedamage(damage: Int) {
+        if(isBlocking==true){
+            if(health>=(damage)/2){
+                if((damage/2>defence/2)){
+                    let takendamage = (damage)/2-defence/2
+                    print("The enemy takes \(takendamage) damage. The enemy has \(health-takendamage) heath left.")
+                    health=health-takendamage
+                }
+            }else{
+                health=0
+            }
+            if(health==0){
+                isAlive=false
+            }
+        }else{
+            if(health>=damage){
+                if((damage/2>defence/2)){
+                    let takendamage = (damage)-defence/2
+                    print("The enemy takes \(takendamage) damage. The enemy has \(health-takendamage) heath left.")
+                    health=health-takendamage
+                }
+            }else{
+                health=0
+            }
+            if(health==0){
+                isAlive=false
+            }
+        }
+        isBlocking=false
+    }
+}
+
 class Fight {
     enum FightAction {
         case attack
@@ -353,7 +350,7 @@ class Fight {
             winner=Winners.player
             print("The winner is the player!")
             player.reset()
-            var xpgained = enemy.getLevel()
+            let xpgained = enemy.getLevel()
             print("You got \(xpgained) xp!")
             if(player.getXP()+xpgained>=player.getXPToLevelUp()){
                 let prevxptolvlup = player.getXPToLevelUp()
@@ -410,8 +407,6 @@ class Fight {
                 return move
             }
         }
-        print("This Is IMPOSSIBLE.")
-        return player_turn()
     }
 }
 
@@ -447,9 +442,9 @@ class Game {
             print("What level enemy would you like to fight?")
             askLevel = enemy_level(str: string_unwrapper(str:inputForced()))
 
-            //Default Enemy: Heath 20, Offence 10, Defence 5
-            //Default(Level 1) Player: Heath 20, Offence 10, Defence 5
-            var fight = Fight(enemyIn: createEnemy(level: askLevel), playerIn: ThePlayer)
+            //Level 1 Enemy: Heath 20, Offence 10, Defence 5
+            //Level 1 Player: Heath 20, Offence 10, Defence 5, knows Punch and Arm Block
+            let fight = Fight(enemyIn: createEnemy(level: askLevel), playerIn: ThePlayer)
             ThePlayer=fight.getPlayer()
             first=false
         }
@@ -474,11 +469,11 @@ class Game {
         }
     }
     func createEnemy(level: Int) -> Enemy{
-        var new_enemy = Enemy()
+        let new_enemy = Enemy()
         if(level==1){
             return new_enemy
         }
-        for i in 0...level-2{
+        for _ in 0...level-2{
            new_enemy.levelUp()
         }
         return new_enemy
@@ -565,10 +560,9 @@ func readFile(path: String) -> String{
         print("ERROR ERROR ABOOOOOOOORT!!!!!!!: \(error).")
         return "nil"
     }
-    return "nil"
 }
 
-Game()
+let game = Game()
 
 /**To-Do List
 * 1. ADD GRAPHICS
