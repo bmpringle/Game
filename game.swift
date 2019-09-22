@@ -81,8 +81,9 @@ class Player {
         return "\(move1.getName())\n\(move2.getName())\n\(move3.getName())\n\(move4.getName())"
     }
     func writeData(){
-        let datatowrite = NSString(string: "\(level)\n\(maxHealth)\n\(offence)\n\(defence)\n\(exp)\n\(move1.getName())\n\(move2.getName())\n\(move3.getName())\n\(move4.getName())")
-        writeFile(path: "Data/playerdata.data", towrite: datatowrite)
+        var datatowrite = "\(level)\n\(maxHealth)\n\(offence)\n\(defence)\n\(exp)\n"
+        datatowrite += "\(move1.getName())\n\(move2.getName())\n\(move3.getName())\n\(move4.getName())\n"
+        writeFile(path: "Data/playerdata.data", towrite: NSString(string: datatowrite))
     }
 
     func readData(){
@@ -104,14 +105,14 @@ class Player {
     }
 
     func match_string_to_move(str: String) -> Move{
-        switch(str){
-            case Punch().getName():
+        switch(str.lowercased()){
+            case Punch().getName().lowercased():
             return Punch()
 
-            case ArmBlock().getName():
+            case ArmBlock().getName().lowercased():
             return ArmBlock()
 
-            case SpinKick().getName():
+            case SpinKick().getName().lowercased():
             return SpinKick()
 
             default:
@@ -453,9 +454,9 @@ class Game {
 
     func process_playornot(first: Bool){
         if(first){
-            print("To fight, answer yes, to leave, answer no. To check stats, ask for stats.")
+            print("Options:\n   FIGHT\n   LEAVE\n   STATS")
         }else{
-        print("Do you want to fight again? Answer yes or no. If you want to view your stats, ask for stats.")
+            print("Options:\n   FIGHT\n   LEAVE\n   STATS")
         }
         let input = string_unwrapper(str:inputForced())
         let play = play_or_not(input: input)
@@ -500,11 +501,11 @@ class Game {
             print("Please give an input!")
             return play_or_not(input: string_unwrapper(str:inputForced()))
         }else{
-            if(input=="yes"){
+            if(input.lowercased()=="fight"){
                 return PlayEnum.play
-            }else if(input=="no"){
+            }else if(input.lowercased()=="leave"){
                 return PlayEnum.quit
-            }else if(input=="stats"){
+            }else if(input.lowercased()=="stats"){
                 return PlayEnum.stats
             }
             print("Please input a valid action")
@@ -546,7 +547,6 @@ func writeFile(path: String, towrite: NSString) {
     }
     catch let error as NSError {
         print("ERROR ERROR ABOOOOOOOORT!!!!!!!: \(error).")
-       
     }
 }
 
