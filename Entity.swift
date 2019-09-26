@@ -34,12 +34,20 @@ class Entity {
     func getsNewMove() {
         switch(level) {
             case 2:
-            print("You learned Spin Kick!")
-            move3 = SpinKick()
+                if(self is Enemy) {
+                    move3 = SpinKick()
+                }else if(self is Player) {
+                    move3 = SpinKick()
+                    print("You learned Spin Kick!")
+                }
             break
             case 3:
-            print("You learned Intimidate!")
-            move4 = Intimidate()
+                if(self is Enemy) {
+                    move4 = Intimidate()
+                }else if(self is Player) {
+                    move4 = Intimidate()
+                    print("You learned Intimidate!")
+                }
             break
             default:
             break
