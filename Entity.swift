@@ -17,7 +17,12 @@ class Entity {
     var move4: Move = Move()
     var moveamnt = 2
     var offenceStatus: Double = 1.0
+    var name = "entity"
 
+    func getName() -> String {
+        return name
+    }
+    
     func moves_string() -> String{
         return "\(move1.getName())\n\(move2.getName())\n\(move3.getName())\n\(move4.getName())"
     }
@@ -143,7 +148,7 @@ class Entity {
         moveDefence = defence
     }
 
-    func attack(move: Move) -> Int{
+    func attack(move: Move, enemy: Entity) -> Int{
         return 0
     }
 

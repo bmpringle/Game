@@ -10,9 +10,24 @@ class Fight {
     var player: Player
     var winner: Winners = Winners.nobody
 
+    func playerWon() -> Bool {
+        if(winner==Winners.player) {
+            return true
+        }else {
+            return false
+        }
+    }
+
     func getPlayer() -> Player{
         return player
     }
+
+    init() {
+        //Does nothing
+        enemy = Enemy()
+        player = Player()
+    }
+
     init(enemyIn: Enemy, playerIn: Player) {
         enemy=enemyIn
         player=playerIn
@@ -43,14 +58,14 @@ class Fight {
             }
         }else{
             winner=Winners.enemy
-            print("The winner is the enemy...")
+            print("The winner is \(enemy.getName())...")
             player.reset()
         }
     }
 
     func process_move(move: Move, mover: Entity, otherentity: Entity){
         if(move.getAttack().boolValue) {
-            otherentity.takedamage(damage: mover.attack(move: move))
+            otherentity.takedamage(damage: mover.attack(move: move, enemy: otherentity))
         }else if(move.getDefence().boolValue) {
             mover.block(move: move)
         }else if(move.getStatus().boolValue){

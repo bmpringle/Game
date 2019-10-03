@@ -39,16 +39,16 @@ class Player: Entity {
         xpToLevelUp = level*level
     }
 
-    override func attack(move: Move) -> Int {
+    override func attack(move: Move, enemy: Entity) -> Int {
         moveOffence=Int(Double(offence)*move.getMod()*offenceStatus)
         let crit = Int.random(in: 0 ... 1)
         if crit == 1 {
             let damage = (moveOffence*3)/2
             print("You get a critical hit!")
-            print("You use \(move.getName()) and do \(damage) damage to the enemy.")
+            print("You use \(move.getName()) and do \(damage) damage to the \(enemy.getName()).")
             return damage
         }else{
-            print("You use \(move.getName()) and do \(moveOffence) damage to the enemy.")
+            print("You use \(move.getName()) and do \(moveOffence) damage to the \(enemy.getName()).")
             return moveOffence
         }
     }

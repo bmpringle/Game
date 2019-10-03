@@ -4,28 +4,33 @@ class Enemy: Entity {
         super.init()
     }
 
+    init(nameIn: String) {
+        super.init()
+        name = nameIn
+    }
+
     func printEnemyStats() {
-        print("Enemy level is: \(level)")
+        print("\(name)'s level is: \(level)")
         print("Max health is \(maxHealth)")
         print("Offence is \(offence)")
         print("Defence is \(defence)")
-        print("Enemy moves are:\n\(move1.getName())\n\(move2.getName())\n\(move3.getName())\n\(move4.getName())")
+        print("\(name)'s moves are:\n\(move1.getName())\n\(move2.getName())\n\(move3.getName())\n\(move4.getName())")
     }
 
     func getLevel() -> Int{
         return level
     }
 
-    override func attack(move: Move) -> Int {
+    override func attack(move: Move, enemy: Entity) -> Int {
         moveOffence=Int(Double(offence)*move.getMod()*offenceStatus)
         let crit = Int.random(in: 0 ... 1)
         if crit == 1 {
             let damage = (moveOffence*3)/2
-            print("The enemy got a critical hit!")
-            print("The enemy used \(move.getName()) and did \(damage) damage to you.")
+            print("\(name) got a critical hit!")
+            print("\(name) used \(move.getName()) and did \(damage) damage to you.")
             return damage
         }else{
-            print("The enemy used \(move.getName()) and did \(moveOffence) damage to you.")
+            print("\(name) used \(move.getName()) and did \(moveOffence) damage to you.")
             return moveOffence
         }
     }
@@ -51,14 +56,14 @@ class Enemy: Entity {
 
     override func block(move: Move) {
         moveDefence=Int(Double(defence)*move.getMod())
-        print("The enemy used \(move.getName())")
+        print("\(name) used \(move.getName())")
     }
 
     override func takedamage(damage: Int) {
         if(health>=damage){
             if((damage>moveDefence/2)){
                 let takendamage = (damage)-moveDefence/2
-                print("The enemy took \(takendamage) damage. The enemy has \(health-takendamage) heath left.")
+                print("\(name) took \(takendamage) damage. \(name) has \(health-takendamage) heath left.")
                 health=health-takendamage
             }
         }else{

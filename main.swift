@@ -3,11 +3,14 @@ import Foundation
 class Game {
     var ThePlayer: Player = Player()
     var askLevel: Int = 1
+    var TheMap: Map
+ 
     enum PlayEnum{
         case play
         case stats
         case quit
     }
+
     enum NewGameEnum {
         case NewGame
         case Continue
@@ -15,8 +18,9 @@ class Game {
 
     var playing = true
     init(){
-        var first: Bool = true
-
+        print("WARNING!!! IF YOU ^C the game, you will lose any progress you made since you last saved. Please use \"Save\" in the overworld to save.")
+        //var first: Bool = true
+        TheMap = Map(player: Player())
         print("Hello! For a new game, please type newgame. To continue a game, type continue.")
         
         if(newgame_or_continue(input: string_unwrapper(str:inputForced()))==NewGameEnum.NewGame){
@@ -24,7 +28,11 @@ class Game {
         }else{
             ThePlayer.readData()
         }
-        while(playing){   
+
+        while(playing){ 
+            TheMap = Map(player: ThePlayer)
+            playing = TheMap.startMap()
+            /**
             process_playornot(first: first)
             if(playing==false){
                 break;
@@ -36,11 +44,16 @@ class Game {
             //Level 1 Player: Heath 20, Offence 10, Defence 5, knows Punch and Arm Block
             let fight = Fight(enemyIn: createEnemy(level: askLevel), playerIn: ThePlayer)
             ThePlayer=fight.getPlayer()
+            TheMap.updatePlayer(player: ThePlayer)
             first=false
+            **/
         }
         ThePlayer.writeData()
     }
 
+    func getPlayer() -> Player {
+        return ThePlayer
+    }    
     func process_playornot(first: Bool){
         if(first){
             print("Options:\n   FIGHT\n   LEAVE\n   STATS")
@@ -115,39 +128,6 @@ class Game {
             print("Please input a valid action")
             return newgame_or_continue(input: string_unwrapper(str:inputForced()))
         }
-    }
-}
-
-func inputForced() -> String? {
-    return readLine()
-}
-
-func string_unwrapper(str: String?) -> String{
-        if let ustr=str {
-            return ustr
-        }else {
-            return "nil"
-        }
-}
-
-func writeFile(path: String, towrite: NSString) {
-    do {
-        try  towrite.write(toFile: path, atomically:false, encoding: String.Encoding.utf8.rawValue)
-    }
-    catch let error as NSError {
-        print("ERROR ERROR ABOOOOOOOORT!!!!!!!: \(error).")
-    }
-}
-
-func readFile(path: String) -> String{
-    do {
-        // Get the contents
-        let contents = try NSString(contentsOfFile: path, encoding: String.Encoding.utf8.rawValue) 
-        return contents as String
-    }
-    catch let error as NSError {
-        print("ERROR ERROR ABOOOOOOOORT!!!!!!!: \(error).")
-        return "nil"
     }
 }
 
