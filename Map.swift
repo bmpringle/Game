@@ -25,9 +25,11 @@ class Map {
     }
 
     func startMap() -> Bool{
+        playAmbientMusic()
         while(play) {
             runRoom()
         }
+        stopAmbientMusic()
         return play
     }
 
@@ -93,9 +95,9 @@ class Map {
 
         if(game_tick()==GameTickEnum.ractions) {
             if(!action4room1) {
-                print("Destroy the fountain\nSearch the room\nAttempt to open the door")
+                print("1. Destroy: Destroy the fountain\n2. Search: Search the room\n3. Open: Attempt to open the door")
             }else {
-                print("Jump into the hole\nSearch the room\nAttempt to open the door")
+                print("1. Jump: Jump into the hole\n2. Search: Search the room\n3. Open: Attempt to open the door")
             }
             let action = room1ActionsGet()
 
@@ -134,23 +136,33 @@ class Map {
     func room1ActionsGet() -> Room1Actions {
         let s = string_unwrapper(str:inputForced())
 
-        if(s.lowercased()=="destroy") {
+        if((s.lowercased()=="destroy" || s.lowercased()=="1") && !action4room1) {
             return Room1Actions.Destroy
-        }else if(s.lowercased()=="search") {
+        }else if(s.lowercased()=="search" || s.lowercased()=="2") {
             return Room1Actions.Search
-        }else if(s.lowercased()=="open") {
+        }else if(s.lowercased()=="open" || s.lowercased()=="3") {
             return Room1Actions.Open
-        }else if(s.lowercased()=="jump" && action4room1){
+        }else if((s.lowercased()=="jump" || s.lowercased()=="1") && action4room1){
             return Room1Actions.Jump
         }
         print("Please input a valid action")
         return room1ActionsGet()
     }
 
+
+    enum Room2Actions {
+        case Search
+        case LeftDoor
+        case MiddleDoor
+        case RightDoor
+        case TrapDoor
+    }
+
     var enter2 = true
     var skeleton: Enemy = Enemy(nameIn: "Skeleton")
     var skeletonalive = true
     var fight1: Fight = Fight()
+    var isldoorskeldeadonce = false
     func room2() {
         if(enter2) {
             print("You enter a room through the hole. Cool.")
@@ -158,14 +170,112 @@ class Map {
             enter2=false
             print("You land on a pile of bones, and are suddenly flung back. The bones reform into a skeleton.")
             print("FIIIGHT!")
+            skeleton.levelUp()
             fight1 = Fight(enemyIn: skeleton, playerIn: ThePlayer)
             ThePlayer = fight1.getPlayer()
             if(fight1.playerWon()) {
                 skeletonalive = false
+                print("As you get a better look around the room, you see that there are traces of skeletons,\nbut they seem to have been destroyed by something, or someone.")
+                print("This room is much larger than the one you were in before. It has marble columns and archways\noverhead. This was built by advanced architects...")
+                print("There is a door off to your left, one off to your right, and one down the middle")
             }else{
+                print("game over...")
                 game_over()
             }
         }
+
+        if(!skeletonalive) {
+            if(game_tick()==GameTickEnum.ractions) {
+                print("Options:")
+                print(" 1. Search: Search the room")
+                print(" 2. OpenL: Open the left door")
+                print(" 3. OpenM: Open the middle door")
+                print(" 4. OpenR: Open the right door")
+                if(isldoorskeldeadonce) {
+                    print(" 5. OpenT: Open the trapdoor")
+                }
+                let action = Room2ActionsGet()
+
+                switch(action){
+                    case Room2Actions.Search:
+                        print("As you search the room you find a book and open it. It says that if the doors are\nopened in a certain order, treasure awaits. Then, there seem to be exceedingly complicated instructions\nabout how to obtain this treasure after getting the door sequence correct.\n\nDo you wish to read the book?")
+                        let yn=readBookRoom2()
+                        if(yn=="y"){
+                            let dotdotdot = "......................................................................"
+                            print(dotdotdot)
+                            print(dotdotdot)
+                            print(dotdotdot)
+                            print(dotdotdot)
+                            print("You FINALLY get to the last page of the book, which has only a few words on it. It says, \"CONGRADULATIONS! You, yes YOU, just wasted\nhours of your time, reading a useless piece of crap! That was a pretty\n stupid thing to do, yknow.\"")
+                            print("Well aren't you a GENIUS.")
+                        }else{
+                            print("As you set the book down, you get the feeling that reading it wouldn't have been a good idea anyway.")
+                        }
+                    break
+
+                    case Room2Actions.LeftDoor:
+                        print("You open the left door, and notice another skeleton at the end of the room. Before you\ncan do anything, it notices you and charges you.")
+                        print("FIIIIGHT!")
+                        skeleton.reset()
+                        fight1 = Fight(enemyIn: skeleton, playerIn: ThePlayer)
+                        ThePlayer = fight1.getPlayer()
+                        if(fight1.playerWon()) {
+                            if(!isldoorskeldeadonce){
+                                print("You leave the room, and notice a trapdoor in the floor that wasn't there before...")
+                            isldoorskeldeadonce=true
+                            }else {
+                                print("You leave the room. Nothing happens, what were you expecting?")
+                            }
+                        }else{
+                            print("game over...")
+                            game_over()
+                        }
+                    break
+
+                    case Room2Actions.MiddleDoor:
+                        print("You open the middle door, and walk inside a small room. You get your head nearly chopped off,\nand you run back outside.")
+                    break
+
+                    case Room2Actions.RightDoor:
+                        print("You open the door, and fall to your death. Nice one, idot.")
+                        game_over()
+                    break
+
+                    case Room2Actions.TrapDoor:
+                    break
+                }
+            }
+        }
+    }
+
+    func readBookRoom2() -> String {
+        let s = string_unwrapper(str:inputForced())
+
+        if(s.lowercased()=="yes") {
+            return "y"
+        }else if(s.lowercased()=="no"){
+            return "n"
+        }
+        print("Please answer yes or no.")
+        return readBookRoom2()
+    }
+
+    func Room2ActionsGet() -> Room2Actions {
+        let s = string_unwrapper(str:inputForced())
+
+        if(s.lowercased()=="search" || s.lowercased()=="1") {
+            return Room2Actions.Search
+        }else if(s.lowercased()=="OpenL" || s.lowercased()=="2") {
+            return Room2Actions.LeftDoor
+        }else if(s.lowercased()=="OpenM" || s.lowercased()=="3") {
+            return Room2Actions.MiddleDoor
+        }else if(s.lowercased()=="OpenR" || s.lowercased()=="4"){
+            return Room2Actions.RightDoor
+        }else if((s.lowercased()=="OpenT" || s.lowercased()=="5") && isldoorskeldeadonce){
+            return Room2Actions.TrapDoor
+        }
+        print("Please input a valid action")
+        return Room2ActionsGet()
     }
 
     func room3() {
@@ -202,7 +312,7 @@ class Map {
 
     func game_tick() -> GameTickEnum{
             
-        print("Options:\n   Room Actions\n   LEAVE\n   STATS")
+        print("Options:\n   1. Room Actions\n   2. Quit\n   3. Stats")
     
         let input = string_unwrapper(str:inputForced())
         let action = game_tick_internal(input: input)
@@ -227,11 +337,11 @@ class Map {
             print("Please give an input!")
             return game_tick_internal(input: string_unwrapper(str:inputForced()))
         }else{
-            if(input.lowercased()=="room actions"){
+            if(input.lowercased()=="room actions" || input.lowercased()=="1"){
                 return GameTickEnum.ractions
-            }else if(input.lowercased()=="leave"){
+            }else if(input.lowercased()=="quit" || input.lowercased()=="2"){
                 return GameTickEnum.quit
-            }else if(input.lowercased()=="stats"){
+            }else if(input.lowercased()=="stats" || input.lowercased()=="3"){
                 return GameTickEnum.stats
             }
             print("Please input a valid action")

@@ -29,6 +29,9 @@ class Fight {
     }
 
     init(enemyIn: Enemy, playerIn: Player) {
+        stopAmbientMusic()
+        playNormalBattleMusic()
+
         enemy=enemyIn
         player=playerIn
         
@@ -61,6 +64,9 @@ class Fight {
             print("The winner is \(enemy.getName())...")
             player.reset()
         }
+
+        stopNormalBattleMusic()
+        playAmbientMusic()
     }
 
     func process_move(move: Move, mover: Entity, otherentity: Entity){

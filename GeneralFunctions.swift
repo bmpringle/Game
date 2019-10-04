@@ -1,4 +1,5 @@
 import Foundation
+import AVFoundation
 
 func inputForced() -> String? {
     return readLine()
@@ -31,4 +32,43 @@ func readFile(path: String) -> String{
         print("ERROR ERROR ABOOOOOOOORT!!!!!!!: \(error).")
         return "nil"
     }
+}
+
+var AmbientMusic: AVAudioPlayer?
+var NormalBattleMusic: AVAudioPlayer?
+
+func playAmbientMusic() {
+    let path = Bundle.main.path(forResource: "ambient", ofType:"wav")!
+    let url = URL(fileURLWithPath: path)
+
+    do {
+        AmbientMusic = try AVAudioPlayer(contentsOf: url)
+        AmbientMusic?.numberOfLoops = -1
+        AmbientMusic?.play()
+    } catch {
+        print("Couldn't Load Ambient Music")
+        // couldn't load file :(
+    }
+}
+
+func stopAmbientMusic() {
+    AmbientMusic?.stop()
+}
+
+func playNormalBattleMusic() {
+    let path = Bundle.main.path(forResource: "normalbattle", ofType:"wav")!
+    let url = URL(fileURLWithPath: path)
+
+    do {
+        NormalBattleMusic = try AVAudioPlayer(contentsOf: url)
+        NormalBattleMusic?.numberOfLoops = -1
+        NormalBattleMusic?.play()
+    } catch {
+        print("Couldn't Load Normal Battle Music")
+        // couldn't load file :(
+    }
+}
+
+func stopNormalBattleMusic() {
+    NormalBattleMusic?.stop()
 }

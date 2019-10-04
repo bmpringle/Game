@@ -23,6 +23,10 @@ class Entity {
         return name
     }
     
+    func heal() {
+        health=maxHealth
+    }
+
     func moves_string() -> String{
         return "\(move1.getName())\n\(move2.getName())\n\(move3.getName())\n\(move4.getName())"
     }
