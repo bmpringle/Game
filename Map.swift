@@ -8,7 +8,7 @@ class Map {
     var unsavedPlayer: Player 
 
     init(player: Player) {
-        room=1
+        room=3
         backup=room
         ThePlayer=player
         unsavedPlayer = player
@@ -206,7 +206,7 @@ class Map {
                             print(dotdotdot)
                             print(dotdotdot)
                             print(dotdotdot)
-                            print("You FINALLY get to the last page of the book, which has only a few words on it. It says, \"CONGRADULATIONS! You, yes YOU, just wasted\nhours of your time, reading a useless piece of crap! That was a pretty\n stupid thing to do, yknow.\"")
+                            print("You FINALLY get to the last page of the book, which has only a few words on it. It says, \"CONGRATULATIONS! You, yes YOU,\n just wasted hours of your time, reading a useless piece of crap! That was a pretty\n stupid thing to do, yknow.\"")
                             print("Well aren't you a GENIUS.")
                         }else{
                             print("As you set the book down, you get the feeling that reading it wouldn't have been a good idea anyway.")
@@ -242,6 +242,7 @@ class Map {
                     break
 
                     case Room2Actions.TrapDoor:
+                    shouldmoveup=true
                     break
                 }
             }
@@ -278,9 +279,65 @@ class Map {
         return Room2ActionsGet()
     }
 
+    var enter3=true
     func room3() {
-        
+        if(enter3) {
+            print("You fall down, after a long 20 seconds of falling, you hit the ground and lose consciousness.")
+            print("When you wake up, you notice that you are in a small jail cell.")
+            print("Looking to your left, you notice that there is another very sketchy looking person being held captive.")
+            print("The shady man turns to you and says, 'Hey kid. You want to help me get out of here?'")
+            let gowithprisoner = goWithPrisoner()
+            if(gowithprisoner==1) {
+                print("You successfuly escape with him, but as you turn around he says, 'Die, I'm hungry.' He kills you before\nyou can react.")
+                game_over()
+            }else if(gowithprisoner==0){
+                print("'Fine then, I'll do it alone! I was going to kill you anyways for food, but you'd\nprobably taste terrible anyways. Bye.'")
+                print("He uses a rock he had on him to bash the lock in, but as he is walking down the hall,")
+                print("you notice a bow sticking out of the wall behind him. He is shot in the neck by a skeleton,\n and dies immediatly from the poison coating")
+            }
+            enter3=false
+        }else{
+
+        }
     }
+
+    var annoyman = 0;
+
+    func goWithPrisoner() -> Int {
+        let s = string_unwrapper(str:inputForced())
+        
+        if(s.lowercased()=="yes") {
+            return 1
+        }else if(s.lowercased()=="no"){
+            return 0
+        }
+
+        switch(annoyman) {
+            case 0:
+                print("The prisoner says, 'Please give me a straight answer.'")
+                annoyman=annoyman+1
+            break
+            case 1:
+                print("The man says, 'Oh dear lord, you must have hit your head when you fell.'")
+                annoyman=annoyman+1
+            break
+            case 2:
+                print("The man says, 'You terrible terrible person, you have been messing with me the whole time. STOP IT, FOOL. I was going to kill you anyway...'")
+                annoyman=annoyman+1
+            break
+            case 3:
+                print("The man says, 'Please die.'")
+                print("You die.")
+                game_over()
+                return -1
+            break
+            default:
+            break
+
+        }   
+        return goWithPrisoner()
+    }
+
 
     func room4() {
         
@@ -351,6 +408,7 @@ class Map {
 
 
     func game_over() {
+        print("GAME_OVER")
         room=1
         backup=room
         ThePlayer=unsavedPlayer
@@ -367,6 +425,11 @@ class Map {
         enter2 = true
         skeleton = Enemy(nameIn: "Skeleton")
         skeletonalive = true
+        isldoorskeldeadonce = false
+
+        //Room 3
+        enter3 = true
+        annoyman = 0
     }
 
 }

@@ -38,7 +38,7 @@ var AmbientMusic: AVAudioPlayer?
 var NormalBattleMusic: AVAudioPlayer?
 
 func playAmbientMusic() {
-    let path = Bundle.main.path(forResource: "ambient", ofType:"wav")!
+    let path = Bundle.main.path(forResource: "Data/ambient", ofType:"wav")!
     let url = URL(fileURLWithPath: path)
 
     do {
@@ -56,7 +56,7 @@ func stopAmbientMusic() {
 }
 
 func playNormalBattleMusic() {
-    let path = Bundle.main.path(forResource: "normalbattle", ofType:"wav")!
+    let path = Bundle.main.path(forResource: "Data/normalbattle", ofType:"wav")!
     let url = URL(fileURLWithPath: path)
 
     do {

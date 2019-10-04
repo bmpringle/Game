@@ -63,7 +63,7 @@ class Enemy: Entity {
         if(health>=damage){
             if((damage>moveDefence/2)){
                 let takendamage = (damage)-moveDefence/2
-                print("\(name) took \(takendamage) damage. \(name) has \(health-takendamage) heath left.")
+                print("\(name) took \(takendamage) damage. \(name) has \(health-takendamage) health left.")
                 health=health-takendamage
             }
         }else{
