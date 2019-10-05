@@ -279,12 +279,13 @@ class Map {
         return Room2ActionsGet()
     }
 
+    var canescape = false
     var enter3=true
     func room3() {
         if(enter3) {
             print("You fall down, after a long 20 seconds of falling, you hit the ground and lose consciousness.")
             print("When you wake up, you notice that you are in a small jail cell.")
-            print("Looking to your left, you notice that there is another very sketchy looking person being held captive.")
+            print("Looking to your left, you notice that there is another very sketchy looking person being held captive in an adjacent cell.")
             print("The shady man turns to you and says, 'Hey kid. You want to help me get out of here?'")
             let gowithprisoner = goWithPrisoner()
             if(gowithprisoner==1) {
@@ -294,12 +295,144 @@ class Map {
                 print("'Fine then, I'll do it alone! I was going to kill you anyways for food, but you'd\nprobably taste terrible anyways. Bye.'")
                 print("He uses a rock he had on him to bash the lock in, but as he is walking down the hall,")
                 print("you notice a bow sticking out of the wall behind him. He is shot in the neck by a skeleton,\n and dies immediatly from the poison coating")
+                print("The skeleton looks at you, and says, 'Don't even think about escaping, or you'll end up like him.'")
+                print("The skeleton leaves the hallway.")
             }
+            shouldmoveup=false
             enter3=false
         }else{
+            if(game_tick()==GameTickEnum.ractions) {
+                print("Options:")
+                print("1. Search: Search the room")
+                if(canescape) {
+                    print("2. Escape: Crawl through the metal grate into the sewers.")
+                }
+                let action = Room3ActionsGet()
 
+                if(action==Room3Actions.Search) {
+                    S_Room3()
+                }else if(action==Room3Actions.Escape) {
+                    let action_s = E_Room3()
+                }
+            }
         }
     }
+
+    enum Room3SearchActions {
+        case SearchBGet
+        case SearchTGet
+        case SearchGGet
+        case SearchBGotten
+        case SearchTGotten
+        case SearchGGotten
+        case SearchTNotYet
+        case SearchGNotYet
+        case NOU
+    }
+
+    func S_Room3() {
+        print("Options: ")
+        print("1. SearchB: Search the Bookcase")
+        print("2. SearchT: Search the Toilet")
+        print("3. SearchG: Search the Metal Grate")
+        let action = Room3SearchActionsGet()
+        
+        switch(action) {
+            case Room3SearchActions.SearchBGet:
+                print("You attempt to grab a book off of the bookshelf. You pull a book off of the third\nrow and notice a shiny metal object behind the books, it's a wrench!")
+            break
+            case Room3SearchActions.SearchTGet:
+                print("You use the wrench to unscrew a pipe from the toilet. This could be used as a weapon.")
+            break
+            case Room3SearchActions.SearchGGet:
+                print("You use the wrench to break the metal bars over the grate and it reveals a hole\ngoing into the sewers.")
+            break
+            case Room3SearchActions.SearchBGotten:
+                print("It is a bookshelf, it has books. One is missing because you took it.")
+            break
+            case Room3SearchActions.SearchTGotten:
+                print("It is a toilet, it has a seat. There is a pipe missing because you took it.")
+            break
+            case Room3SearchActions.SearchGGotten:
+                print("There is a grate. It is missing metal bars because you broke them.")
+            break
+            case Room3SearchActions.SearchTNotYet:
+                print("Why are you sticking you face near the toilet?")
+            break
+            case Room3SearchActions.SearchGNotYet:
+                print("This grate has metal bars covering it, you will need something to get them off and something to fight with.")
+            break
+            case Room3SearchActions.NOU:
+                print("No U. ")
+            break
+            default:
+                print("Stop Exist.")
+            break
+        }
+    }
+
+    func E_Room3() {
+        print("yeetus defeatus commit self deletus.")
+    }
+
+    enum Room3Actions {
+        case Search
+        case Escape
+    }
+
+    var haspliers = false
+    var haspipe = false
+    var opengrate = false
+
+    func Room3SearchActionsGet() -> Room3SearchActions {
+        let s = string_unwrapper(str:inputForced())
+
+        if(s.lowercased()=="searchb" || s.lowercased()=="1"){
+            if(haspliers) {
+                return Room3SearchActions.SearchBGotten
+            }else{
+                haspliers=true
+                return Room3SearchActions.SearchBGet
+            }
+        }else if(s.lowercased()=="searcht" || s.lowercased()=="2") {
+            if(haspliers && !haspipe) {
+                haspipe=true
+                return Room3SearchActions.SearchTGet
+            }else if(haspliers && haspipe) {
+                return Room3SearchActions.SearchTGotten
+            }else if(!haspliers) {
+                return Room3SearchActions.SearchTNotYet
+            }
+        }else if(s.lowercased()=="searchg" || s.lowercased()=="3") {
+            if(haspipe && !opengrate) {
+                opengrate=true
+                canescape=true
+                return Room3SearchActions.SearchGGet
+            }else if(haspipe && opengrate) {
+                return Room3SearchActions.SearchGGotten
+            }else if(!haspipe) {
+                return Room3SearchActions.SearchGNotYet
+            }
+            return Room3SearchActions.NOU
+        }
+
+        print("Please input a valid action")
+        return Room3SearchActionsGet()
+    }
+
+    func Room3ActionsGet() -> Room3Actions {
+        let s = string_unwrapper(str:inputForced())
+
+        if(s.lowercased()=="search" || s.lowercased()=="1") {
+            return Room3Actions.Search
+        }else if((s.lowercased()=="escape" || s.lowercased()=="2") && canescape) {
+            return Room3Actions.Escape
+        }
+
+        print("Please input a valid action")
+        return Room3ActionsGet()
+    }
+
 
     var annoyman = 0;
 
@@ -330,7 +463,6 @@ class Map {
                 print("You die.")
                 game_over()
                 return -1
-            break
             default:
             break
 
@@ -430,6 +562,9 @@ class Map {
         //Room 3
         enter3 = true
         annoyman = 0
+        haspipe = false
+        haspliers = false
+        opengrate = false
     }
 
 }
