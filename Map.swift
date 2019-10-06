@@ -8,7 +8,7 @@ class Map {
     var unsavedPlayer: Player 
 
     init(player: Player) {
-        room=3
+        room=1
         backup=room
         ThePlayer=player
         unsavedPlayer = player
@@ -312,7 +312,7 @@ class Map {
                 if(action==Room3Actions.Search) {
                     S_Room3()
                 }else if(action==Room3Actions.Escape) {
-                    let action_s = E_Room3()
+                    //let action_s = E_Room3()
                 }
             }
         }
@@ -364,9 +364,6 @@ class Map {
             break
             case Room3SearchActions.NOU:
                 print("No U. ")
-            break
-            default:
-                print("Stop Exist.")
             break
         }
     }
