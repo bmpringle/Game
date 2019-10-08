@@ -134,6 +134,16 @@ class Entity {
         offenceStatus=1.0
     }
 
+    func reset(shouldHeal: Bool){
+        if(shouldHeal) {
+            health = maxHealth
+        }
+        isAlive = true      
+        moveOffence=offence
+        moveDefence=defence
+        offenceStatus=1.0
+    }
+
     init(healthIn: Int, offenceIn: Int, defenceIn: Int) {
         maxHealth=healthIn
         health=healthIn

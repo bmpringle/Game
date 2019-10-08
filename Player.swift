@@ -9,6 +9,7 @@ class Player: Entity {
     func printPlayerStats() {
         print("You are level \(level)")
         print("Max health is \(maxHealth)")
+        print("Current health is \(health)")
         print("Offence is \(offence)")
         print("Defence is \(defence)")
         print("You have \(exp) xp, and you need \(xpToLevelUp) xp to level up")
@@ -58,7 +59,6 @@ class Player: Entity {
         offence=offence+1
         defence=defence+1
         maxHealth=maxHealth+5
-        health=maxHealth
         exp=0
         if(Float(level)/2.0==Float(level/2)){
             offence=offence+2

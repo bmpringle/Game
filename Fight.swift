@@ -9,6 +9,7 @@ class Fight {
     var enemy: Enemy
     var player: Player
     var winner: Winners = Winners.nobody
+    var healafterbattle = false
 
     func playerWon() -> Bool {
         if(winner==Winners.player) {
@@ -28,6 +29,21 @@ class Fight {
         player = Player()
     }
 
+    init(enemyIn: Enemy, playerIn: Player, heal: Bool) {
+        healafterbattle=heal
+
+        stopAmbientMusic()
+        playNormalBattleMusic()
+
+        enemy=enemyIn
+        player=playerIn
+        
+        fight()
+
+        stopNormalBattleMusic()
+        playAmbientMusic()
+    }
+
     init(enemyIn: Enemy, playerIn: Player) {
         stopAmbientMusic()
         playNormalBattleMusic()
@@ -35,6 +51,13 @@ class Fight {
         enemy=enemyIn
         player=playerIn
         
+        fight()
+
+        stopNormalBattleMusic()
+        playAmbientMusic()
+    }
+
+    func fight() {
         while(player.alive() && enemy.alive()){
             process_move(move: player_turn(), mover: player, otherentity:enemy)
             enemy.resetTurn()
@@ -48,7 +71,7 @@ class Fight {
         if(player.alive()){
             winner=Winners.player
             print("The winner is the player!")
-            player.reset()
+            player.reset(shouldHeal: healafterbattle)
             let xpgained = enemy.getLevel()
             print("You got \(xpgained) xp!")
             if(player.getXP()+xpgained>=player.getXPToLevelUp()){
@@ -64,9 +87,6 @@ class Fight {
             print("The winner is \(enemy.getName())...")
             player.reset()
         }
-
-        stopNormalBattleMusic()
-        playAmbientMusic()
     }
 
     func process_move(move: Move, mover: Entity, otherentity: Entity){

@@ -3,7 +3,6 @@ import Foundation
 class Game {
     var ThePlayer: Player = Player()
     var askLevel: Int = 1
-    var TheMap: Map
  
     enum PlayEnum{
         case play
@@ -20,7 +19,6 @@ class Game {
     init(){
         print("WARNING!!! IF YOU ^C the game, you will lose any progress you made since you last saved. Please use \"Save\" in the overworld to save.")
         //var first: Bool = true
-        TheMap = Map(player: Player())
         print("Hello! For a new game, please type newgame. To continue a game, type continue.")
         
         if(newgame_or_continue(input: string_unwrapper(str:inputForced()))==NewGameEnum.NewGame){
@@ -30,23 +28,15 @@ class Game {
         }
 
         while(playing){ 
-            TheMap = Map(player: ThePlayer)
-            playing = TheMap.startMap()
-            /**
-            process_playornot(first: first)
-            if(playing==false){
-                break;
-            }
-            print("What level enemy would you like to fight?")
-            askLevel = enemy_level(str: string_unwrapper(str:inputForced()))
+            let tutorial = TutorialMap(player: ThePlayer)
+            playing = tutorial.startMap()
+            ThePlayer = tutorial.returnPlayer()
 
-            //Level 1 Enemy: Heath 20, Offence 10, Defence 5
-            //Level 1 Player: Heath 20, Offence 10, Defence 5, knows Punch and Arm Block
-            let fight = Fight(enemyIn: createEnemy(level: askLevel), playerIn: ThePlayer)
-            ThePlayer=fight.getPlayer()
-            TheMap.updatePlayer(player: ThePlayer)
-            first=false
-            **/
+            if(playing) {
+                let mainMap = OverworldMap(player: ThePlayer)
+                playing = mainMap.startMap()
+                ThePlayer = mainMap.returnPlayer()
+            }
         }
         ThePlayer.writeData()
     }
