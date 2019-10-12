@@ -43,6 +43,8 @@ class TutorialMap: Map {
     var action4room1 = false
     func room1() {
         if(enter1){
+            print("You are a young man, working in a coal mine, outside of the small city\nof Hydesville. You are deep in debt that was passed to you from your family, and have been trying to pay\nit off for the past 3 years. Today, you decide to go deeper than you normally do, because the greedy owner of the mine,\nFreeman, is always finding ways to cut your pay.")
+            print("As you walk forwards, you happen to notice a desolate path branching off of the main\nmine, and it looks like it hasn't been used in years. Filled with a sudden curiosity,\nyou take the path to see where it leads. After walking for a while, you see a door of\nsome strange grey material up ahead..., but as you run towards it, with\nexcitement in your eyes, you fail to notice the pit approaching. As you fall, you wonder if \nyou will live. You hit the ground and black out, only to wake up hours later somewhere completely different.")
             shouldmoveup=false
             print("You walk into the room, and you see a fountain in the middle of the room. What do you do?")
             enter1=false
@@ -491,12 +493,14 @@ class TutorialMap: Map {
                     if(sealedinsect) {
                         print("You already sealed this grate.")
                     }else{
-                        if(runhowmany==0) {
+                        if(runhowmany>0) {
                             print("You sealed the grate.")
                             sealednum=sealednum+1
                             sealedinsect=true
+                        }else{
+                            print("This is the grate you went down...")
                         }
-                        print("This is the grate you went down...")
+                        
                     }
                 }
             }
