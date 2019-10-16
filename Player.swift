@@ -2,8 +2,25 @@ import Foundation
 
 class Player: Entity {
 
+    var money = 100
+
     override init() {
         super.init()
+    }
+
+    func setMoney(newmoney: Int) {
+        money = newmoney
+    }
+
+    func getMoney() -> Int{
+        return money
+    }
+
+    func displayItems() {
+        print("Items:")
+        for i in 0..<items.count{
+            print(" " + items[i].name)
+        }
     }
 
     func printPlayerStats() {
@@ -14,6 +31,7 @@ class Player: Entity {
         print("Defence is \(defence)")
         print("You have \(exp) xp, and you need \(xpToLevelUp) xp to level up")
         print("Your moves are:\n\(move1.getName())\n\(move2.getName())\n\(move3.getName())\n\(move4.getName())")
+        print("You have \(money) money.")
     }
 
     func writeData(){

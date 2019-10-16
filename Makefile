@@ -1,7 +1,7 @@
 default:game
 
 game : main.swift 
-	swiftc Player.swift Entity.swift Enemy.swift Fight.swift Move.swift  GeneralFunctions.swift Map.swift TutorialMap.swift OverworldMap.swift $< -o $@
+	swiftc Player.swift Entity.swift Enemy.swift Fight.swift Move.swift  GeneralFunctions.swift Map.swift TutorialMap.swift OverworldMap.swift ShopMap.swift Items.swift $< -o $@
 	install_name_tool -add_rpath "/usr/lib/swift" $@
 	#This shouldn't be necissary, but Catalina is broken
 

@@ -531,46 +531,6 @@ class TutorialMap: Map {
         finished=true
     }
 
-    func game_tick() -> GameTickEnum{
-            
-        print("Options:\n   1. Room Actions\n   2. Quit\n   3. Stats")
-    
-        let input = string_unwrapper(str:inputForced())
-        let action = game_tick_internal(input: input)
-        
-        if(action == GameTickEnum.quit){
-            play=false
-            print("Bye!")
-            return GameTickEnum.quit
-        }else if(action == GameTickEnum.stats){
-            print("Your stats are:")
-            ThePlayer.printPlayerStats()
-            return game_tick()
-        }else if(action == GameTickEnum.ractions) {
-            return GameTickEnum.ractions
-        }
-        print("THISISNOTPOSSIBLE")
-        return GameTickEnum.ractions
-    }
-
-    func game_tick_internal(input: String) -> GameTickEnum{
-        if(input == "nil"){
-            print("Please give an input!")
-            return game_tick_internal(input: string_unwrapper(str:inputForced()))
-        }else{
-            if(input.lowercased()=="room actions" || input.lowercased()=="1"){
-                return GameTickEnum.ractions
-            }else if(input.lowercased()=="quit" || input.lowercased()=="2"){
-                return GameTickEnum.quit
-            }else if(input.lowercased()=="stats" || input.lowercased()=="3"){
-                return GameTickEnum.stats
-            }
-            print("Please input a valid action")
-            return game_tick_internal(input: string_unwrapper(str:inputForced()))
-        }
-    }
-
-
     func game_over() {
         print("GAME OVER")
         room=1

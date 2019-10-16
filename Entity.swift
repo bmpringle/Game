@@ -18,11 +18,32 @@ class Entity {
     var moveamnt = 2
     var offenceStatus: Double = 1.0
     var name = "entity"
+    var items = [Item]()
+
+    func addItem(item: Item) {
+        items.append(item)
+    }
 
     func getName() -> String {
         return name
     }
     
+    func useItem(name: String) {
+        var itemnum = ItemNumInList(name: name, list: items)
+        if(itemnum == -1) {
+            print("You don't have this item!")
+        }else{
+            var item = items[itemnum]
+            if(item.uses==1) {
+                item.performUse()
+                items.remove(at: itemnum)
+            }else{
+                item.performUse()
+                item.uses = item.uses-1
+            }
+        }
+    }
+
     func heal() {
         health=maxHealth
     }
