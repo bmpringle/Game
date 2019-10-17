@@ -45,7 +45,7 @@ class Map {
 
     func game_tick() -> GameTickEnum{
             
-        print("Options:\n   1. Room Actions\n   2. Quit\n   3. Stats\n  4. Items")
+        print("Options:\n   1. Room Actions\n   2. Quit\n   3. Stats\n   4. Items")
     
         let input = string_unwrapper(str:inputForced())
         let action = game_tick_internal(input: input)
@@ -62,6 +62,7 @@ class Map {
             return GameTickEnum.ractions
         }else if(action == GameTickEnum.items) {
             ThePlayer.displayItems()
+            ThePlayer.useItem(name: string_unwrapper(str:inputForced()))
             return game_tick()
         }
         print("THISISNOTPOSSIBLE")

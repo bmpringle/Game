@@ -21,8 +21,8 @@ class Item {
         uses=usenum
     }
 
-    func performUse() {
-
+    func performUse(entity: Entity) -> Entity{
+        return entity
     }
 }
 
@@ -36,14 +36,21 @@ class HealingPotion: Item {
         type = ItemType.heal      
     }
 
-    override func performUse() {
-        
+    override func performUse(entity: Entity) -> Entity {
+        var currenthealth = entity.getHealth()
+        var maxhealth = entity.getMaxHealth()
+        if(currenthealth+heal<maxhealth) {
+            entity.setHealth(newhealth: currenthealth+heal)
+        }else{
+            entity.setHealth(newhealth: maxhealth)
+        }
+        return entity
     }
 }
 
 func ItemNumInList(name: String, list: [Item]) -> Int{
     for i in 0..<list.count {
-        if(String(i).lowercased() == list[i].name.lowercased()) {
+        if(name.lowercased() == list[i].name.lowercased()) {
             return i
         }
     }

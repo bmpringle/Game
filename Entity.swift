@@ -24,21 +24,35 @@ class Entity {
         items.append(item)
     }
 
+    func setHealth(newhealth: Int) {
+        health=newhealth
+    }
+
     func getName() -> String {
         return name
     }
     
+    func getHealth() -> Int {
+        return health
+    }
+
+    func getMaxHealth() -> Int {
+        return maxHealth
+    }
+
     func useItem(name: String) {
         var itemnum = ItemNumInList(name: name, list: items)
         if(itemnum == -1) {
-            print("You don't have this item!")
+            if(self is Player) {
+                print("You don't have this item!")
+            }      
         }else{
             var item = items[itemnum]
             if(item.uses==1) {
-                item.performUse()
+                item.performUse(entity: self)
                 items.remove(at: itemnum)
             }else{
-                item.performUse()
+                item.performUse(entity: self)
                 item.uses = item.uses-1
             }
         }

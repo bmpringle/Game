@@ -28,9 +28,9 @@ class Game {
         }
 
         while(playing){ 
-            let tutorial = TutorialMap(player: ThePlayer)
-            playing = tutorial.startMap()
-            ThePlayer = tutorial.returnPlayer()
+            //let tutorial = TutorialMap(player: ThePlayer)
+            //playing = tutorial.startMap()
+            //ThePlayer = tutorial.returnPlayer()
 
             if(playing) {
                 let mainMap = OverworldMap(player: ThePlayer)
