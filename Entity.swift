@@ -19,6 +19,23 @@ class Entity {
     var offenceStatus: Double = 1.0
     var name = "entity"
     var items = [Item]()
+    var weaponequipped: Weapon = Unarmed()
+
+    func equipWeapon(weapon: Weapon, comingfrominv: Bool) {
+        if(comingfrominv) {
+            print("??")
+            let itemnum = ItemNumInList(name: weapon.name, list: items)
+            items.remove(at: itemnum)
+        }
+        items.append(weaponequipped)
+        weaponequipped = weapon
+        move1 = weaponequipped.move1
+        move2 = weaponequipped.move2
+
+        if(self is Player) {
+            print("You equipped the \(weapon.name)!")
+        }
+    }
 
     func addItem(item: Item) {
         items.append(item)
@@ -41,16 +58,20 @@ class Entity {
     }
 
     func useItem(name: String) {
-        var itemnum = ItemNumInList(name: name, list: items)
+        let itemnum = ItemNumInList(name: name, list: items)
         if(itemnum == -1) {
             if(self is Player) {
                 print("You don't have this item!")
             }      
         }else{
-            var item = items[itemnum]
+            let item = items[itemnum]
             if(item.uses==1) {
                 item.performUse(entity: self)
-                items.remove(at: itemnum)
+                if(item is Weapon) {
+
+                }else{
+                    items.remove(at: itemnum)
+                }
             }else{
                 item.performUse(entity: self)
                 item.uses = item.uses-1
@@ -67,7 +88,7 @@ class Entity {
     }
     func writeData(relativeFilePath: String){
         var datatowrite = "\(level)\n\(maxHealth)\n\(offence)\n\(defence)\n\(exp)\n"
-        datatowrite += "\(move1.getName())\n\(move2.getName())\n\(move3.getName())\n\(move4.getName())\n"
+        datatowrite += "\(move1.getName())\n\(move2.getName())\n\(move3.getName())\n\(move4.getName())\n\(weaponequipped.name)\n\(weaponequipped.movesusable)"
         writeFile(path: relativeFilePath, towrite: NSString(string: datatowrite))
     }
 
@@ -76,22 +97,24 @@ class Entity {
     }
 
     func getsNewMove() {
-        switch(level) {
+        switch(weaponequipped.movesusable) {
             case 2:
                 if(self is Enemy) {
-                    move3 = SpinKick()
+            
                 }else if(self is Player) {
-                    move3 = SpinKick()
-                    print("You learned Spin Kick!")
+                    print("You learned \(weaponequipped.move3.name)!")
+                    move3 = weaponequipped.move3
                 }
+                weaponequipped.movesusable=3
             break
             case 3:
                 if(self is Enemy) {
-                    move4 = Intimidate()
+
                 }else if(self is Player) {
-                    move4 = Intimidate()
-                    print("You learned Intimidate!")
+                    print("You learned \(weaponequipped.move4.name)!")
+                    move4 = weaponequipped.move4
                 }
+                weaponequipped.movesusable=4
             break
             default:
             break
@@ -129,6 +152,15 @@ class Entity {
 
             case Intimidate().getName().lowercased():
             return Intimidate()
+
+            case RapierSwipe().getName().lowercased():
+            return RapierSwipe()
+
+            case RapierBlock().getName().lowercased():
+            return RapierBlock()
+
+            case RapierSpinSlash().getName().lowercased():
+            return RapierSpinSlash()
 
             default:
             return Move()

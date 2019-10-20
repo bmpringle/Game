@@ -54,8 +54,9 @@ class OverworldMap: Map {
                 if(action==0) {
                     changePlace()
                 }else if(action==1) {
-                    var shop = ShopMap(money: ThePlayer.getMoney())
-                    shop.addItemToShop(item: HealingPotion(itemname: "Healing Potion", healamount: 10), price: 1)
+                    let shop = ShopMap(money: ThePlayer.getMoney())
+                    shop.addItemToShop(item: HealingPotion(itemname: "Healing Potion", healamount: 10), price: 20)
+                    shop.addItemToShop(item: Rapier(), price: 55)
                     let shopdata = shop.runshop()
                     ThePlayer.setMoney(newmoney: shopdata.money)
 

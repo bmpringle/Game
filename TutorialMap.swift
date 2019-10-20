@@ -441,7 +441,7 @@ class TutorialMap: Map {
             print("As you walk forwards, you notice a strange silhouette in the distance. You walk forwards\n and he turns to face you")
             print("He is holding a rapier, and as you near him, the silent man leaps forwards and swings his sword at you.")
             print("FIIIIGHT!")
-            man.levelUp()
+            man.equipWeapon(weapon: Rapier(), comingfrominv: false)
             man.levelUp()
             man.reset()
             let fight2 = Fight(enemyIn: man, playerIn: ThePlayer, heal: true)

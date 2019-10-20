@@ -73,3 +73,21 @@ class Intimidate: Move{
         super.init(attackin: false, defencein: false, statusin: true, namein: "Intimidate", typein: "status", modin: 0.7)
     }
 }
+
+class RapierSwipe: Move{
+    override init(){
+        super.init(attackin: true, defencein: false, statusin: false, namein: "Rapier Swipe", typein: "physical", modin: 1.4)
+    }
+}
+
+class RapierBlock: Move{
+    override init(){
+        super.init(attackin: false, defencein: false, statusin: true, namein: "Rapier Block", typein: "physical", modin: 2.0)
+    }
+}
+
+class RapierSpinSlash: Move{
+    override init(){
+        super.init(attackin: false, defencein: false, statusin: true, namein: "Rapier Spin Slash", typein: "physical", modin: 1.6)
+    }
+}

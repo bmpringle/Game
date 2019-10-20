@@ -21,7 +21,7 @@ class ShopMap{
         shoplist.append(ItemInShop(item: item, cost: price))
     }
 
-    func runshop() -> DataToMap{
+    func runshop() -> DataToMap {
         print("The shop is selling:")
         for i in 0..<shoplist.count {
             print("\(i+1). " + shoplist[i].item.name)     

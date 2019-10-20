@@ -32,11 +32,16 @@ class Player: Entity {
         print("You have \(exp) xp, and you need \(xpToLevelUp) xp to level up")
         print("Your moves are:\n\(move1.getName())\n\(move2.getName())\n\(move3.getName())\n\(move4.getName())")
         print("You have \(money) money.")
+        if(weaponequipped is Unarmed) {
+            print("You have no weapon equipped.")
+        }else{
+            print("You have the \(weaponequipped.name) eqipped as a weapon.")
+        }
     }
 
     func writeData(){
         var datatowrite = "\(level)\n\(maxHealth)\n\(offence)\n\(defence)\n\(exp)\n"
-        datatowrite += "\(move1.getName())\n\(move2.getName())\n\(move3.getName())\n\(move4.getName())\n"
+        datatowrite += "\(move1.getName())\n\(move2.getName())\n\(move3.getName())\n\(move4.getName())\n\(weaponequipped.name)\n\(weaponequipped.movesusable)"
         writeFile(path: "Data/playerdata.data", towrite: NSString(string: datatowrite))
     }
 
@@ -55,6 +60,7 @@ class Player: Entity {
         move2 = match_string_to_move(str: String(lines[6]))
         move3 = match_string_to_move(str: String(lines[7]))
         move4 = match_string_to_move(str: String(lines[8]))
+        weaponequipped = match_string_and_att_to_weapon(str: String(lines[9]), movenumunlocked: Int(String(lines[10]))!)
         xpToLevelUp = level*level
     }
 
