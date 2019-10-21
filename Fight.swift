@@ -95,12 +95,7 @@ class Fight {
         }else if(move.getDefence().boolValue) {
             mover.block(move: move)
         }else if(move.getStatus().boolValue){
-            otherentity.intimidated(mod: move.getMod())
-            if(mover is Player) {
-                print("You used \(move.getName()) on \(otherentity.name)")  
-            }else{
-                print("\(mover.name) used \(move.getName()) on you")  
-            } 
+            otherentity.intimidated(mod: move.getMod(), move: move)
         }
     }
 

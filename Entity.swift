@@ -92,7 +92,12 @@ class Entity {
         writeFile(path: relativeFilePath, towrite: NSString(string: datatowrite))
     }
 
-    func intimidated(mod: Double) {
+    func intimidated(mod: Double, move: Move) {
+        if(self is Enemy) {
+                print("You used \(move.getName()) on \(name)")  
+            }else{
+                print("\(name) used \(move.getName()) on you")  
+            } 
         offenceStatus=mod
     }
 
