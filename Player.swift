@@ -6,6 +6,7 @@ class Player: Entity {
 
     override init() {
         super.init()
+        name="Player"
     }
 
     func setMoney(newmoney: Int) {

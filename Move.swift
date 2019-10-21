@@ -82,12 +82,12 @@ class RapierSwipe: Move{
 
 class RapierBlock: Move{
     override init(){
-        super.init(attackin: false, defencein: false, statusin: true, namein: "Rapier Block", typein: "physical", modin: 2.0)
+        super.init(attackin: false, defencein: true, statusin: false, namein: "Rapier Block", typein: "physical", modin: 2.0)
     }
 }
 
 class RapierSpinSlash: Move{
     override init(){
-        super.init(attackin: false, defencein: false, statusin: true, namein: "Rapier Spin Slash", typein: "physical", modin: 1.6)
+        super.init(attackin: true, defencein: false, statusin: false, namein: "Rapier Spin Slash", typein: "physical", modin: 1.6)
     }
 }

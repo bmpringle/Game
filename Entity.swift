@@ -100,7 +100,7 @@ class Entity {
         switch(weaponequipped.movesusable) {
             case 2:
                 if(self is Enemy) {
-            
+                    move3 = weaponequipped.move3
                 }else if(self is Player) {
                     print("You learned \(weaponequipped.move3.name)!")
                     move3 = weaponequipped.move3
@@ -109,7 +109,7 @@ class Entity {
             break
             case 3:
                 if(self is Enemy) {
-
+                    move4 = weaponequipped.move4
                 }else if(self is Player) {
                     print("You learned \(weaponequipped.move4.name)!")
                     move4 = weaponequipped.move4

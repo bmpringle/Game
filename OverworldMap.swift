@@ -66,9 +66,9 @@ class OverworldMap: Map {
                         ThePlayer.addItem(item: shopdata.itemShop.item)
                     }
                 }else if(action==2) {
-                    
+                    print("As you approach the tower, the blue orb things move to block your path, and start to \nbuzz with a strange blue light. You (wisely) decide to back off.")
                 }else if(action==3) {
-                    
+                    print("")
                 }
             }
         }

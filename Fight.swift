@@ -96,16 +96,21 @@ class Fight {
             mover.block(move: move)
         }else if(move.getStatus().boolValue){
             otherentity.intimidated(mod: move.getMod())
+            if(mover is Player) {
+                print("You used \(move.getName()) on \(otherentity.name)")  
+            }else{
+                print("\(mover.name) used \(move.getName()) on you")  
+            } 
         }
     }
 
     func enemy_turn() -> Move{
-        let fight = Int.random(in: 0 ... enemy.moveamnt-1)
+        let fight = Int.random(in: 0 ... enemy.weaponequipped.movesusable-1)
         switch(fight) {
             case 0:
                 return enemy.move1
             case 1:
-                return enemy.move2
+                return enemy.move2       
             case 2:
                 return enemy.move3
             case 3:
